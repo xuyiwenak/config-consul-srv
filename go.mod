@@ -43,6 +43,18 @@ replace (
 )
 
 require (
+	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
+	github.com/coredns/coredns v1.5.0 // indirect
+	github.com/go-ole/go-ole v1.2.4 // indirect
+	github.com/hashicorp/go-discover v0.0.0-20190522154730-8aba54d36e17 // indirect
+	github.com/hashicorp/hil v0.0.0-20190212132231-97b3a9cdfa93 // indirect
+	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69 // indirect
+	github.com/hashicorp/raft-boltdb v0.0.0-20171010151810-6e5ba93211ea // indirect
 	github.com/micro/go-config v1.1.0
 	github.com/micro/go-log v0.1.0
+	github.com/mitchellh/pointerstructure v0.0.0-20190430161007-f252a8fd71c8 // indirect
+	github.com/shirou/gopsutil v2.18.12+incompatible // indirect
+	github.com/shirou/w32 v0.0.0-20160930032740-bb4de0191aa4 // indirect
+	gopkg.in/fatih/pool.v2 v2.0.0 // indirect
+	k8s.io/utils v0.0.0-00010101000000-000000000000 // indirect
 )
