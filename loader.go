@@ -10,12 +10,10 @@ import (
 )
 
 var (
-	err error
-)
-
-var (
-	m      sync.RWMutex
-	inited bool
+	configData []byte
+	m          sync.RWMutex
+	inited     bool
+	err        error
 )
 
 // Init 初始化配置
@@ -54,10 +52,14 @@ func Init() {
 				log.Fatalf("[loadAndWatchConfigFile] 侦听应用配置文件变动 异常， %s", err)
 				return
 			}
-
+			if err := config.Get(appPath, "micro").Scan(&configData); err != nil {
+				panic(err)
+			}
+			log.Log(string(configData))
 			log.Logf("[loadAndWatchConfigFile] 文件变动，%s", string(v.Bytes()))
 		}
 	}()
+	log.Log(string(configData))
 	// 标记已经初始化
 	inited = true
 	return
