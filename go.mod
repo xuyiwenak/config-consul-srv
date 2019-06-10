@@ -1,4 +1,4 @@
-module user-web
+module consul-config-push
 
 go 1.12
 
