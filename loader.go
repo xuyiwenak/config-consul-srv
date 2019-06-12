@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
-	"strings"
 	"sync"
 )
 
@@ -50,21 +49,12 @@ func Init() {
 	}
 	fmt.Println(string(conf.Bytes()))
 	url := "http://127.0.0.1:8500/v1/kv/micro/config/cluster"
-
-	req, err := http.NewRequest("PUT", url, strings.NewReader(string(conf.Bytes())))
+	data, err, rsp := PutJson(url, string(conf.Bytes()))
 	if err != nil {
+		log.Fatalf("http 发送模块异常，%s", err)
 		panic(err)
 	}
-	req.Header.Add("Content-Type", "application/json")
-	res, err := http.DefaultClient.Do(req)
-	defer func() {
-		if res != nil && res.Body != nil {
-			res.Body.Close()
-		}
-	}()
-	body, _ := ioutil.ReadAll(res.Body)
-	fmt.Println(res)
-	fmt.Println(string(body))
+	fmt.Println(data, rsp)
 	// 侦听文件变动
 	watcher, err := conf.Watch()
 	if err != nil {
