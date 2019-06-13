@@ -31,5 +31,5 @@ func main() {
 
 func registryOptions(ops *registry.Options) {
 	ops.Timeout = time.Second * 5
-	ops.Addrs = []string{"127.0.0.1:8500"}
+	ops.Addrs = []string{consulConfigCenterAddr}
 }

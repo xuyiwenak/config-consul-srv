@@ -11,16 +11,24 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"sync"
 )
 
 var (
-	configData []byte
-	jsdata     string
-	m          sync.RWMutex
-	inited     bool
-	err        error
+	m                      sync.RWMutex
+	inited                 bool
+	err                    error
+	consulAddr             consulConfig
+	consulConfigCenterAddr string
 )
+
+// consulConfig 配置结构
+type consulConfig struct {
+	Enabled bool   `json:"enabled"`
+	Host    string `json:"host"`
+	Port    int    `json:"port"`
+}
 
 // Init 初始化配置
 func Init() {
@@ -48,20 +56,21 @@ func Init() {
 		panic(err)
 	}
 	fmt.Println(string(conf.Bytes()))
+	// 上传默认配置
 	url := "http://127.0.0.1:8500/v1/kv/micro/config/cluster"
-	data, err, rsp := PutJson(url, string(conf.Bytes()))
+	_, err, _ := PutJson(url, string(conf.Bytes()))
 	if err != nil {
 		log.Fatalf("http 发送模块异常，%s", err)
 		panic(err)
 	}
-	fmt.Println(data, rsp)
 	// 侦听文件变动
 	watcher, err := conf.Watch()
 	if err != nil {
 		log.Fatalf("[Init] 开始侦听应用配置文件变动 异常，%s", err)
 		panic(err)
 	}
-
+	consulConfigCenterAddr = consulAddr.Host + ":" + strconv.Itoa(consulAddr.Port)
+	fmt.Println(consulConfigCenterAddr)
 	go func() {
 		for {
 			v, err := watcher.Next()
@@ -75,6 +84,13 @@ func Init() {
 			log.Logf("[loadAndWatchConfigFile] 文件变动，%s", string(v.Bytes()))
 		}
 	}()
+	// 获取本地的consul配置
+	configMap := conf.Map()
+	fmt.Println(configMap)
+	if err := conf.Get("micro", "consul").Scan(&consulAddr); err != nil {
+		panic(err)
+	}
+
 	// 标记已经初始化
 	inited = true
 	return

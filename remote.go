@@ -27,7 +27,7 @@ func main() {
 	var d dbConfig
 	aa := conf.Map()
 	log.Log(aa)
-	if err := conf.Get("micro", "config", "database", "loop").Scan(&d); err != nil {
+	if err := conf.Get("micro", "config", "micro", "consul").Scan(&d); err != nil {
 		log.Logf("json format err!!!", err)
 	}
 	log.Log(d.DB)
