@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/registry/consul"
+	"github.com/micro/go-micro/util/log"
 	"time"
 )
 

@@ -1,21 +1,25 @@
 package main
 
 import (
-	"github.com/micro/go-config"
-	"github.com/micro/go-config/source/consul"
-	"github.com/micro/go-log"
+	"fmt"
+	"github.com/micro/go-micro/config"
+	"github.com/micro/go-micro/config/source/consul"
+	"github.com/micro/go-micro/util/log"
 )
 
-type dbConfig struct {
-	DB int `json:"dict"`
-	//Ca int    `json:"port"`
+type ClusterConfig struct {
+	MicroConfig string `json:"micro"`
 }
+
+var (
+	cc ClusterConfig
+)
 
 func main() {
 	// 注册consul的配置地址
 	consulSource := consul.NewSource(
 		consul.WithAddress("127.0.0.1:8500"),
-		consul.WithPrefix("/micro/config/database"),
+		consul.WithPrefix("/micro/config/cluster"),
 		// optionally strip the provided prefix from the keys, defaults to false
 		consul.StripPrefix(true),
 	)
@@ -24,11 +28,8 @@ func main() {
 	if err := conf.Load(consulSource); err != nil {
 		log.Logf("load config errr!!!", err)
 	}
-	var d dbConfig
-	aa := conf.Map()
-	log.Log(aa)
-	if err := conf.Get("micro", "config", "micro", "consul").Scan(&d); err != nil {
+	if err := conf.Get("micro", "config", "cluster").Scan(&cc); err != nil {
 		log.Logf("json format err!!!", err)
 	}
-	log.Log(d.DB)
+	fmt.Println(cc.MicroConfig)
 }

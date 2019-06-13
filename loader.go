@@ -3,11 +3,10 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/micro/go-config"
-	"github.com/micro/go-config/encoder/json"
-	"github.com/micro/go-config/source"
-	"github.com/micro/go-config/source/file"
-	"github.com/micro/go-log"
+	"github.com/micro/go-micro/config"
+	"github.com/micro/go-micro/config/encoder/json"
+	"github.com/micro/go-micro/config/source"
+	"github.com/micro/go-micro/config/source/file"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -25,9 +24,10 @@ var (
 
 // consulConfig 配置结构
 type consulConfig struct {
-	Enabled bool   `json:"enabled"`
-	Host    string `json:"host"`
-	Port    int    `json:"port"`
+	Enabled    bool   `json:"enabled"`
+	Host       string `json:"host"`
+	Port       int    `json:"port"`
+	KVLocation string `json:"kv_location"`
 }
 
 // Init 初始化配置
@@ -63,8 +63,9 @@ func Init() {
 	if err := conf.Get("micro", "consul").Scan(&consulAddr); err != nil {
 		panic(err)
 	}
+	// 拼接配置的地址和 KVcenter 存储路径
 	consulConfigCenterAddr = consulAddr.Host + ":" + strconv.Itoa(consulAddr.Port)
-	url := fmt.Sprintf("http://%s/v1/kv/micro/config/cluster", consulConfigCenterAddr)
+	url := fmt.Sprintf("http://%s/v1/kv/%s", consulConfigCenterAddr, consulAddr.KVLocation)
 	_, err, _ := PutJson(url, string(conf.Bytes()))
 	if err != nil {
 		log.Fatalf("http 发送模块异常，%s", err)
