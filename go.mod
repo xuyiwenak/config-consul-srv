@@ -43,9 +43,7 @@ replace (
 )
 
 require (
-	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/micro/go-config v1.1.0
 	github.com/micro/go-log v0.1.0
-	github.com/xuyiwenak/bambooRat/modprojects/user/proto v0.0.0-20190530031849-216695017bf9 // indirect
-	gopkg.in/fatih/pool.v2 v2.0.0 // indirect
+	github.com/micro/go-micro v1.2.0
 )
