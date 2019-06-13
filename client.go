@@ -7,14 +7,6 @@ import (
 	"github.com/micro/go-micro/util/log"
 )
 
-type ClusterConfig struct {
-	MicroConfig string `json:"micro"`
-}
-
-var (
-	cc ClusterConfig
-)
-
 func main() {
 	// 注册consul的配置地址
 	consulSource := consul.NewSource(
@@ -28,8 +20,9 @@ func main() {
 	if err := conf.Load(consulSource); err != nil {
 		log.Logf("load config errr!!!", err)
 	}
-	if err := conf.Get("micro", "config", "cluster").Scan(&cc); err != nil {
+	if err := conf.Get("micro", "config", "cluster"); err != nil {
 		log.Logf("json format err!!!", err)
 	}
-	fmt.Println(cc.MicroConfig)
+	configMap := conf.Map()
+	fmt.Println(configMap)
 }
