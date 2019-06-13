@@ -7,6 +7,7 @@ import (
 	"github.com/micro/go-micro/config/encoder/json"
 	"github.com/micro/go-micro/config/source"
 	"github.com/micro/go-micro/config/source/file"
+	"github.com/micro/go-micro/util/log"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
