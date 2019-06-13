@@ -56,8 +56,15 @@ func Init() {
 		panic(err)
 	}
 	fmt.Println(string(conf.Bytes()))
-	// 上传默认配置
-	url := "http://127.0.0.1:8500/v1/kv/micro/config/cluster"
+
+	// 读取连接的配置中心
+	configMap := conf.Map()
+	fmt.Println(configMap)
+	if err := conf.Get("micro", "consul").Scan(&consulAddr); err != nil {
+		panic(err)
+	}
+	consulConfigCenterAddr = consulAddr.Host + ":" + strconv.Itoa(consulAddr.Port)
+	url := fmt.Sprintf("http://%s/v1/kv/micro/config/cluster", consulConfigCenterAddr)
 	_, err, _ := PutJson(url, string(conf.Bytes()))
 	if err != nil {
 		log.Fatalf("http 发送模块异常，%s", err)
@@ -69,7 +76,7 @@ func Init() {
 		log.Fatalf("[Init] 开始侦听应用配置文件变动 异常，%s", err)
 		panic(err)
 	}
-	consulConfigCenterAddr = consulAddr.Host + ":" + strconv.Itoa(consulAddr.Port)
+
 	fmt.Println(consulConfigCenterAddr)
 	go func() {
 		for {
@@ -84,13 +91,6 @@ func Init() {
 			log.Logf("[loadAndWatchConfigFile] 文件变动，%s", string(v.Bytes()))
 		}
 	}()
-	// 获取本地的consul配置
-	configMap := conf.Map()
-	fmt.Println(configMap)
-	if err := conf.Get("micro", "consul").Scan(&consulAddr); err != nil {
-		panic(err)
-	}
-
 	// 标记已经初始化
 	inited = true
 	return
