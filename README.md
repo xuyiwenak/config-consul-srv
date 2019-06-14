@@ -15,4 +15,29 @@
 └── vendor
 ```  
 
+## 使用解释
+方便docker环境编译
+```
+go mod tidy
+go mod vendor
+```
+### 1. 调试consul server
+需要启动consul
+```
+consul agent -dev
+// 或者从docker环境启动consul镜像
+docker run <consul container name>
+```
+启动consul server
+```
+go run loader.go main.go
+```
+### 2. 调试consul client
+启动consul cilent  
+```
+go run client.go
+```
+## 静态配置
+conf 目录下的micro.yml 文件变更会自动检测到执行对应的逻辑
+
 
