@@ -32,6 +32,11 @@ docker run <consul container name>
 ```
 go run loader.go main.go
 ```
+docker打包运行consul server
+```
+docker build -t consul-config-push .
+docker run --rm -d consul-config-push
+```
 ### 2. 调试consul client
 启动consul cilent  
 ```
