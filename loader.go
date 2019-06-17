@@ -61,7 +61,7 @@ func Init() {
 	// 读取连接的配置中心
 	configMap := conf.Map()
 	fmt.Println(configMap)
-	if err := conf.Get("micro", "consul").Scan(&consulAddr); err != nil {
+	if err := conf.Get("consul").Scan(&consulAddr); err != nil {
 		panic(err)
 	}
 	// 拼接配置的地址和 KVcenter 存储路径
