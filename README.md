@@ -1,4 +1,6 @@
+<a title="Hits" target="_blank" href="https://github.com/xuyiwenak/consul-config-push"><img src="https://hits.b3log.org/b3log/hits.svg"></a>
 # consul-config-push
+
 单独的推送server推送配置到consul配置中心
 
 ## 目录结构  
@@ -44,5 +46,7 @@ go run client.go
 ```
 ## 静态配置
 conf 目录下的micro.yml 文件变更会自动检测到执行对应的逻辑
+
+
 
 
