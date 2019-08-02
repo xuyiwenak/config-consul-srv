@@ -5,7 +5,6 @@ import (
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/registry/consul"
 	"github.com/micro/go-micro/util/log"
-	"time"
 )
 
 func main() {
@@ -30,6 +29,6 @@ func main() {
 }
 
 func registryOptions(ops *registry.Options) {
-	ops.Timeout = time.Second * 5
+	//ops.Timeout = time.Second * 5
 	ops.Addrs = []string{consulConfigCenterAddr}
 }
