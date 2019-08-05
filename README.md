@@ -18,30 +18,31 @@
 ```  
 
 ## 使用解释
-方便docker环境编译
+1. 方便docker环境编译，构建vendor，不实用docker可以跳过
 ```
 go mod tidy
 go mod vendor
 ```
 ### 1. 调试consul server
-需要启动consul
+2. 需要启动consul
 ```
 consul agent -dev
 // 或者从docker环境启动consul镜像
 docker run <consul container name>
 ```
-启动consul server
+3. 启动consul server，把conf下面的yml配置上传到consul的kv里
 ```
 go run loader.go main.go
 ```
-docker打包运行consul server
+如果用docker打包可以构建运行镜像
 ```
 docker build -t consul-config-push .
 docker run --rm -d consul-config-push
 ```
 ### 2. 调试consul client
-启动consul cilent  
+另外一个终端启动consul cilent  
 ```
+// 可以根据自己的逻辑修改上传的配置，以及获取配置的方式。
 go run client.go
 ```
 ## 静态配置
